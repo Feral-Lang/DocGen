@@ -1,0 +1,34 @@
+let io = import('std/io');
+let vec = import('std/vec');
+
+io.println('io: ', io._path_(), '\n');
+let attrs = io._getAttrs_();
+attrs.sort();
+for a in attrs.each() {
+    let id = 'io.' + a;
+    let heading = '#' + id;
+    io.println('* [' + id + '](' + heading + ')');
+}
+io.println();
+
+for a in attrs.each() {
+    let id = 'io.' + a;
+    let heading = '# ' + id;
+    io.println(heading, '\n');
+    let ar = ref(io._getAttr_(a));
+    let items = ar._getDoc_().split('\n');
+    for let i = 0; i < items.len(); ++i {
+        let item = ref(items[i]);
+        if item.startsWith('  ') {
+            if i == 0 {
+                io.println('```rs\n', item, '\n```');
+            } else {
+                io.println('`', item.trim(), '`');
+            }
+        } else {
+            io.println(item);
+        }
+        io.println();
+    }
+    io.println();
+}
